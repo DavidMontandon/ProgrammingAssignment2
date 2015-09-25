@@ -21,9 +21,7 @@ makeCacheMatrix <- function(x = matrix()) {
     cacheX <<- x  ## a copy of matrix x to be compared later in cacheSolve()
     cMatrixInverse <<- solve(x) ## the reverse of the matrix x
   }
-  
 }
-
 
 ## Return a matrix that is the inverse of 'x
 ## is matrix 'x has been cached by makeCacheMatrix(x)
@@ -34,12 +32,19 @@ cacheSolve <- function(x, ...) {
   if(is.matrix(x) != TRUE) {
     message("This matrix is not valid")
     
-  }  else if (identical(x, cacheX) & class( cMatrixInverse ) == "matrix") {  ##check if matrix x is already in cache
-    message("This matrix is in cache")
-    cMatrixInverse   ## return cached inverse
-  } else {
-    message("This matrix is not in cache")
-    solve(x) ## return on the fly inverse calculation
+  }  
+  else if (exists("cacheX")) {  ##check if cacheX exist
+    if(identical(x, cacheX)) {  ##check if matrix x is already in cache)
+      message("This matrix is in cache")
+      cMatrixInverse   ## return cached inverse
+    } else { ##if cacheX exist but not same matrix
+      message("This matrix is not in cache")
+      solve(x) ## return on the fly inverse calculation
+    }
+  } else { ##if chacheX not exist
+      message("This matrix is not in cache")
+      solve(x) ## return on the fly inverse calculation
   }
   
+
 }
